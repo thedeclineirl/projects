@@ -55,12 +55,15 @@ def clean_artists(data):
 def the_artists_csv(dict):    
 	csv_file = open('the_artists.csv', 'w')
 	csv_file.write('Artist,Play Count\n')
+	dict = dict.sort()
 	for key in dict:
 		x = "{0},{1}\n".format(key,dict[key])
 		csv_file.write(x)
 	csv_file.close()
 
+	def main():
+	data = read_in(filepath)
+	scrobbles = process(data)
+	the_artists_csv(clean_artists(scrobbles))
 
-data = read_in(filepath)
-scrobbles = process(data)
-the_artists_csv(clean_artists(scrobbles))
+main()
