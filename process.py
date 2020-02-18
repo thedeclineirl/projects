@@ -27,8 +27,8 @@ def process(data):
 	linecount = 0
 	for line in data:
 		artist = line.split(',')[0]
-		if artist == 'The Arcade Fire':
-			artist = 'Arcade Fire'
+		#if artist == 'The Arcade Fire':
+		#	artist = 'Arcade Fire'
 
 		album = line.split(',')[1]
 		song = line.split(',')[2]
@@ -55,13 +55,24 @@ def clean_artists(data):
 def the_artists_csv(dict):    
 	csv_file = open('the_artists.csv', 'w')
 	csv_file.write('Artist,Play Count\n')
-	dict = dict.sort()
+	#dict = dict.sort()
 	for key in dict:
 		x = "{0},{1}\n".format(key,dict[key])
 		csv_file.write(x)
 	csv_file.close()
 
-	def main():
+def count_by_artist(data):
+	count = {}
+	#TODO
+	for item in data:
+	artist = item.get_artist()
+	if artist in the_artists:
+		count[artist] += 1
+	else:
+		count[artist] = 1
+	return count
+	
+def main():
 	data = read_in(filepath)
 	scrobbles = process(data)
 	the_artists_csv(clean_artists(scrobbles))
