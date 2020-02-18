@@ -12,7 +12,7 @@ Edited:		2020-02-18
 from scrobble import scrobble
 
 #	Local Variables
-filepath = '2020-01-27-lastfm_thedeclineirl.csv'
+filepath = 'source.csv'
 
 def read_in(filename):
 	#	open file, read in data
@@ -39,9 +39,28 @@ def process(data):
 	print("{0} lines processed".format(linecount))
 	return scrobbles
 
-def clean(data):
-	return False
+def clean_artists(data):
+	the_artists = {}
+	for item in data:
+		artist = item.get_artist()
+		#print(artist)
+		if artist.startswith('The'):
+			if artist in the_artists:
+				the_artists[artist] += 1
+			else:
+				the_artists[artist] = 1
+	print("{0} artists starting with The".format(len(the_artists)))
+	return the_artists
+
+def the_artists_csv(dict):    
+	csv_file = open('the_artists.csv', 'w')
+	csv_file.write('Artist,Play Count\n')
+	for key in dict:
+		x = "{0},{1}\n".format(key,dict[key])
+		csv_file.write(x)
+	csv_file.close()
+
 
 data = read_in(filepath)
 scrobbles = process(data)
-
+the_artists_csv(clean_artists(scrobbles))

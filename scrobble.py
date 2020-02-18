@@ -23,7 +23,16 @@ class scrobble:
 		self._datetime = datetime
 	
 	#Setters
-		#NONE - scrobbles should not be changed after intialisation
+	def set_artist(self,artist):
+		self._artist = artist
+
+	def set_album(self,album):
+		self._album = album
+
+	def set_song(self,song):
+		self._song = song
+
+	#NO Datetime setter - scrobbles should not be changed after intialisation
 
 	#Getters
 	def get_artist(self):
