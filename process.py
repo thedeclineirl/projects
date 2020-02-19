@@ -27,9 +27,7 @@ def process(data):
 	linecount = 0
 	for line in data:
 		artist = line.split(',')[0]
-		#if artist == 'The Arcade Fire':
-		#	artist = 'Arcade Fire'
-
+		#artist =artist_check(artist)
 		album = line.split(',')[1]
 		song = line.split(',')[2]
 		datetime = line.split(',')[3]
@@ -76,5 +74,15 @@ def main():
 	data = read_in(filepath)
 	scrobbles = process(data)
 	the_artists_csv(clean_artists(scrobbles))
+
+def artist_check(artist):
+	# Rename commonly misnamed bands for a more acurate count
+	if artist == 'The Arcade Fire':
+		artist = 'Arcade Fire'
+	elif artist == 'Flaming Lips'
+		artist = 'The Flaming Lips'
+	elif artist == 'At The Drive In'
+		artist = 'At the Drive-In'
+	return artist
 
 main()
