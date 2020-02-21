@@ -27,6 +27,7 @@ def process(data):
 	linecount = 0
 	for line in data:
 		artist = line.split(',')[0]
+		#Correct frequently misnamed artists
 		#artist =artist_check(artist)
 		album = line.split(',')[1]
 		song = line.split(',')[2]
@@ -34,10 +35,10 @@ def process(data):
 		listen = scrobble(artist, album, song, datetime)
 		scrobbles.append(listen)
 		linecount+=1
-	print("{0} lines processed".format(linecount))
+	print("Completed with {0} lines processed".format(linecount))
 	return scrobbles
 
-def clean_artists(data):
+def the_artists(data):
 	the_artists = {}
 	for item in data:
 		artist = item.get_artist()
@@ -63,26 +64,32 @@ def count_by_artist(data):
 	count = {}
 	#TODO
 	for item in data:
-	artist = item.get_artist()
-	if artist in the_artists:
-		count[artist] += 1
-	else:
-		count[artist] = 1
+		artist = item.get_artist()
+		if artist in count:
+			count[artist] += 1
+		else:
+			count[artist] = 1
 	return count
 	
-def main():
-	data = read_in(filepath)
-	scrobbles = process(data)
-	the_artists_csv(clean_artists(scrobbles))
-
 def artist_check(artist):
 	# Rename commonly misnamed bands for a more acurate count
 	if artist == 'The Arcade Fire':
 		artist = 'Arcade Fire'
-	elif artist == 'Flaming Lips'
+	elif artist == 'Flaming Lips':
 		artist = 'The Flaming Lips'
-	elif artist == 'At The Drive In'
+	elif artist == 'At The Drive In':
 		artist = 'At the Drive-In'
+
+	#return artist at the end
 	return artist
+
+###############################################
+
+def main():
+	data = read_in(filepath)
+	scrobbles = process(data)
+	the_artists_csv(the_artists(scrobbles))
+
+
 
 main()
