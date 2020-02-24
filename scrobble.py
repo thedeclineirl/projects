@@ -15,6 +15,7 @@ class scrobble:
 	_album = ''
 	_song = ''
 	_datetime = ''
+	_type = ""
 
 	def __init__(self, artist, album, song, datetime):
 		self._artist = artist 
@@ -32,6 +33,9 @@ class scrobble:
 	def set_song(self,song):
 		self._song = song
 
+	def set_type(self,type):
+		self._type = type
+
 	#NO Datetime setter - scrobbles should not be changed after intialisation
 
 	#Getters
@@ -46,6 +50,9 @@ class scrobble:
 
 	def get_datetime(self):
 		return self._datetime
+
+	def get_type(self):
+		return self._type
 
 		# String output for class item
 	def __str__(self):
