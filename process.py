@@ -10,9 +10,11 @@ Edited:		2020-02-21
 '''
 
 from scrobble import scrobble
+#from clean import *
 
 #	Local Variables
 filepath = '2020-02.csv'
+errors = 'artist_errors.csv'
 
 def read_in(filename):
 	#	open file, read in data
@@ -65,6 +67,15 @@ def the_artists_csv(dict):
 		csv_file.write(x)
 	csv_file.close()
 
+def artist_plays_csv(dict):
+	csv_file = open('artist_plays.csv', 'w')
+	csv_file.write('Artist,PlayCount,\n')
+	for key in dict:
+		x = "{0},{1}\n".format(key,dict[key])
+		csv_file.write(x)
+	csv_file.close()
+	print("Artist plays export complete")
+
 def full_export_csv(data):
 	csv_file = open('all_the_artists.csv', 'w')
 	csv_file.write('Artist,Album,Song,Datetime\n')
@@ -87,6 +98,12 @@ def count_by_artist(data):
 def artist_check(artist):
 	# Rename commonly misnamed bands for a more acurate count
 	count = 0
+	error_artists = get_artist_errors(errors)
+	if artist in error_artists:
+		artist = error_artists[artist]
+		count = 1
+
+	'''	
 	if artist == 'The Arcade Fire':
 		artist = 'Arcade Fire'
 		count = 1
@@ -96,16 +113,35 @@ def artist_check(artist):
 	elif artist == 'At The Drive In':
 		artist = 'At the Drive-In'
 		count = 1
+	'''
 
 	#return artist at the end
 	return artist,count
+
+def get_artist_errors(input):
+	#	open file, read in data
+	#file = open(filename, encoding = "utf8")
+	dict = {}
+	file = open(input, 'r')
+	for line in file:
+		art = line.strip()
+		dict[art.split(',')[0]] = art.split(',')[1]
+
+	return dict	
+
+
 
 ###############################################
 
 def main():
 	data = read_in(filepath)
 	scrobbles = process(data)
-	full_export_csv(scrobbles)
+	artist_plays = count_by_artist(scrobbles)
+	
+
+	### Exports ###
+	artist_plays_csv(artist_plays)
+	#full_export_csv(scrobbles)
 	#the_artists_csv(the_artists(scrobbles))
 
 
